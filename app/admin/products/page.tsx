@@ -109,7 +109,7 @@ export default function ProductsPage() {
                     <td className="px-6 py-4 flex items-center gap-4">
                       <div className="w-12 h-12 relative rounded-lg overflow-hidden bg-white/5 border border-white/10 flex-shrink-0">
                         {product.image_url ? (
-                          <Image src={product.image_url} alt={product.name} fill className="object-cover" />
+                          <Image src={product.image_url} alt={product.name} fill unoptimized className="object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-xs text-white/20">No Img</div>
                         )}

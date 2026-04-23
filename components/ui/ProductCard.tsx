@@ -15,7 +15,7 @@ interface ProductCardProps {
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const imageUrl = product.image_url || "/placeholder-shoe.png";
+  const imageUrl = product.image_url || "/products/nebula-g1.png";
   const totalStock = product.sizes?.reduce((sum, s) => sum + s.stock, 0) ?? 0;
 
   return (
@@ -52,6 +52,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
                 src={imageUrl}
                 alt={product.name}
                 fill
+                unoptimized
                 className="object-contain"
               />
             </div>

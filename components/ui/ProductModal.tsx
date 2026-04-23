@@ -19,7 +19,7 @@ export const ProductModal = ({ product, onClose }: ProductModalProps) => {
 
   if (!product) return null;
 
-  const imageUrl = product.image_url || "/placeholder-shoe.png";
+  const imageUrl = product.image_url || "/products/nebula-g1.png";
   const availableSizes = product.sizes?.filter((s) => s.stock > 0) ?? [];
 
   const handleAddToCart = () => {
@@ -58,7 +58,7 @@ export const ProductModal = ({ product, onClose }: ProductModalProps) => {
           <div className="relative h-[400px] lg:h-full bg-white/5 flex items-center justify-center p-12">
             <div className="absolute inset-0 bg-gradient-radial from-neon-green/10 to-transparent" />
             <div className="relative w-full h-full transform -rotate-12">
-              <Image src={imageUrl} alt={product.name} fill className="object-contain" />
+              <Image src={imageUrl} alt={product.name} fill unoptimized className="object-contain" />
             </div>
           </div>
 
