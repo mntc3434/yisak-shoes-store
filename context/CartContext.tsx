@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { Product } from "@/data/products";
 
 interface CartItem extends Product {
@@ -25,7 +25,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addToCart = (product: Product, size: string) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id && item.selectedSize === size);
+      const existing = prev.find(
+        (item) => item.id === product.id && item.selectedSize === size
+      );
       if (existing) {
         return prev.map((item) =>
           item.id === product.id && item.selectedSize === size
@@ -38,7 +40,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const removeFromCart = (productId: string, size: string) => {
-    setCart((prev) => prev.filter((item) => !(item.id === productId && item.selectedSize === size)));
+    setCart((prev) =>
+      prev.filter((item) => !(item.id === productId && item.selectedSize === size))
+    );
   };
 
   const updateQuantity = (productId: string, size: string, delta: number) => {

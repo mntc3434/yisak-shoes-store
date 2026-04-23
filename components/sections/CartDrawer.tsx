@@ -54,7 +54,7 @@ export const CartDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                 cart.map((item) => (
                   <div key={`${item.id}-${item.selectedSize}`} className="flex gap-6 group">
                     <div className="relative w-24 h-24 glass rounded-xl border border-white/10 flex-shrink-0 p-2">
-                      <Image src={item.image} alt={item.name} fill className="object-contain" />
+                      <Image src={item.image_url ?? ""} alt={item.name} fill className="object-contain" />
                     </div>
                     <div className="flex-1 flex flex-col justify-between">
                       <div>

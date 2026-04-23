@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ShoppingCart, Plus, ArrowRight } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Product } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -15,8 +15,11 @@ interface ProductCardProps {
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const imageUrl = product.image_url || "/placeholder-shoe.png";
+  const totalStock = product.sizes?.reduce((sum, s) => sum + s.stock, 0) ?? 0;
+
   return (
-    <div 
+    <div
       className="relative w-full h-[450px] [perspective:1000px] group cursor-pointer"
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -30,9 +33,9 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
         {/* Front Side */}
         <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] glass rounded-2xl border border-white/10 overflow-hidden group-hover:neon-border transition-all flex flex-col">
           {/* Badge */}
-          {product.isNew && (
-            <div className="absolute top-4 left-4 z-10 bg-neon-green text-black px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
-              NEW DROP
+          {totalStock === 0 && (
+            <div className="absolute top-4 left-4 z-10 bg-white/10 text-white/60 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+              SOLD OUT
             </div>
           )}
 
@@ -46,7 +49,7 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
             <div className="absolute inset-0 bg-gradient-radial from-neon-green/5 to-transparent opacity-50" />
             <div className="relative w-full h-full transform group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500">
               <Image
-                src={product.image}
+                src={imageUrl}
                 alt={product.name}
                 fill
                 className="object-contain"
@@ -56,9 +59,9 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
 
           {/* Plus Icon Hover */}
           <div className="absolute bottom-24 right-6 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
-             <div className="p-4 bg-neon-green text-black rounded-full shadow-[0_0_20px_rgba(0,255,136,0.6)]">
-                <Plus size={20} />
-             </div>
+            <div className="p-4 bg-neon-green text-black rounded-full shadow-[0_0_20px_rgba(0,255,136,0.6)]">
+              <Plus size={20} />
+            </div>
           </div>
 
           {/* Info */}
@@ -70,11 +73,9 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
               <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
                 {product.category} COLLECTION
               </span>
-              <div className="flex gap-1">
-                {product.colors.map((color, i) => (
-                  <div key={i} className="w-2 h-2 rounded-full border border-white/20" style={{ backgroundColor: color }} />
-                ))}
-              </div>
+              <span className="text-[10px] text-white/30">
+                {product.brand}
+              </span>
             </div>
           </div>
         </div>
@@ -82,22 +83,34 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
         {/* Back Side */}
         <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] glass rounded-2xl border border-neon-green overflow-hidden flex flex-col p-8 justify-between">
           <div>
-            <h3 className="font-archivo text-2xl text-neon-green mb-4">{product.name}</h3>
+            <h3 className="font-archivo text-2xl text-neon-green mb-1">{product.name}</h3>
+            <p className="text-white/40 text-xs mb-4">{product.brand}</p>
             <p className="text-white/60 text-xs mb-8 leading-relaxed italic">
-              "{product.description}"
+              &quot;{product.description}&quot;
             </p>
 
-            <div className="space-y-4">
-              <span className="text-[10px] font-bold text-white/30 tracking-widest uppercase">TECH SPECS</span>
-              <ul className="space-y-2">
-                {product.tech.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-xs font-bold text-white/80">
-                    <div className="w-1.5 h-1.5 bg-neon-green rounded-full shadow-[0_0_8px_rgba(0,255,136,0.5)]" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {product.sizes && product.sizes.length > 0 && (
+              <div className="space-y-3">
+                <span className="text-[10px] font-bold text-white/30 tracking-widest uppercase">
+                  AVAILABLE SIZES
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes.map((s, i) => (
+                    <span
+                      key={i}
+                      className={cn(
+                        "px-2 py-1 rounded text-[10px] border font-bold",
+                        s.stock > 0
+                          ? "border-neon-green/40 text-neon-green/80"
+                          : "border-white/10 text-white/20 line-through"
+                      )}
+                    >
+                      {s.size}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <button className="w-full py-4 bg-neon-green text-black font-archivo text-xs tracking-[0.3em] rounded-xl flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all">
